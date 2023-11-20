@@ -1,7 +1,7 @@
-import ffmpeg_proxy as ffmpeg
-import gtts_proxy as tts
-import reddit_proxy as reddit
-import youtube_proxy as yt
+import proxies.ffmpeg_proxy as ffmpeg
+import proxies.gtts_proxy as tts
+import proxies.reddit_proxy as reddit
+import proxies.youtube_proxy as yt
 import proofread as pr
 
 reddit_client = reddit.get_reddit_client(reddit.get_token_parameters())
