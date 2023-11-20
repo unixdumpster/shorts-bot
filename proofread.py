@@ -25,7 +25,7 @@ def proofread(text):
     # return " ".join(corrected_words)
     return result
 
-def should_replace_word(word):
-    if word.isupper() or re.search(r'\d+[fFmM]', word) or word.lower() == "asshole":
-        return False
-    return True
+# def should_replace_word(word):
+#     if word.isupper() or re.search(r'\d+[fFmM]', word) or word.lower() == "asshole":
+#         return False
+#     return True
