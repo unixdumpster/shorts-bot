@@ -25,9 +25,8 @@ def create_audio(title, content):
         # ensure the close method of the stream object will be called automatically
         # at the end of the with statement's scope.
         with closing(response["AudioStream"]) as stream:
-            path = os.path.dirname(os.getcwd()) + os.getenv("RAW_AUDIOS_DIR")
-            output = os.path.join(path, f"{title}.mp3")
-
+            path = os.getcwd() + os.getenv("RAW_AUDIOS_DIR")
+            output = os.path.join(path, "AITA.mp3")
             try:
                 # Open a file for writing the output as a binary stream
                 with open(output, "wb") as file:
