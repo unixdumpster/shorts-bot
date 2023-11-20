@@ -5,7 +5,7 @@ def get_token_parameters():
     return {
     'client_id': '0UDKI9xUjEEYVgYMTpkrYA',
     'client_secret': 'JW4dYD3iA5FBiihStxPaaB0y0npNIw',
-    'user_agent': 'useragent',
+    'user_agent': 'useragent'
     }
 
 def get_reddit_client(token_params):
