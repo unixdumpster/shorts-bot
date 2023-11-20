@@ -1,4 +1,4 @@
-import enchant
+# import enchant
 import re
 
 def proofread(text):
