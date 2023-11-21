@@ -1,4 +1,5 @@
 import os
+import sys
 import pytube
 import time 
 
@@ -16,10 +17,11 @@ for title, url in zip(titles, urls):
     parent_path = os.path.dirname(os.getcwd())
     path = os.path.join(parent_path, "raw_videos")
 
-    if os.path.exists(path):
-        break
-
-    os.mkdir(path)
+    try:
+        os.mkdir(path)
+    except (FileExistsError) as error:
+        print(error)
+        sys.exit(-1)
 
     yt = pytube.YouTube(url)
     video = yt.streams.get_highest_resolution()
