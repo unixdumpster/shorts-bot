@@ -4,6 +4,7 @@ import proxies.reddit_proxy as reddit
 import proofread as pr
 import os
 import random as rand
+import proxies.google_speech_to_text as transcribe
 
 # content
 reddit_client = reddit.get_reddit_client(reddit.get_token_parameters())
@@ -15,6 +16,8 @@ audio_path = os.path.join(os.getcwd(), 'raw_audios')
 audio_title = pollytts.create_audio(pr.proofread(post.title), pr.proofread(post.selftext))
 audio_path = os.path.join(audio_path, audio_title)
 
+#subtitles
+subtitles = transcribe.get_transcript(audio_path)
 
 # video
 video_path = os.path.join(os.getcwd(), 'raw_videos')
@@ -22,7 +25,9 @@ videos = os.listdir(video_path)
 video_type = videos[rand.randint(0, 2)]
 video_path = os.path.join(video_path, video_type)
 
-# # product
+# product
 final_title = video_type.split(".")[0] + "_" + audio_title.split(".")[0].strip(" ") + "_FINAL.mp4"
 print(final_title)
-ffmpeg.merge_audio_and_video(video_path, audio_path, os.path.join('final_products', final_title))
+final_path = os.path.join('final_products', final_title)
+ffmpeg.generate_video(video_path, audio_path, subtitles, os.path.join('final_products', final_title))
+# ffmpeg.generate_video_with_subtitles(final_path, subtitles)

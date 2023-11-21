@@ -1,10 +1,7 @@
 import random
 from moviepy.editor import *
-from moviepy.video.tools.subtitles import SubtitlesClip
-from moviepy.config import change_settings
-import re
 
-def merge_audio_and_video(video_path, audio_path, output_path):
+def generate_video(video_path, audio_path, subtitles, output_path):
     video_clip = VideoFileClip(video_path)
     audio_clip = AudioFileClip(audio_path)
 
@@ -19,7 +16,51 @@ def merge_audio_and_video(video_path, audio_path, output_path):
     
     video_clip = video_clip.set_audio(audio_clip)
 
-    video_clip.write_videofile(output_path, codec="libx264", audio_codec="aac")
+    # Create a TextClip object for each subtitle and set the duration
+    subtitle_clips = []
+    for (start, end), text in subtitles:
+        subtitle_clip = TextClip(text, fontsize=60, color='white', font='Impact', stroke_color='black',stroke_width=1)
+        subtitle_clip = subtitle_clip.set_pos('center').set_duration(end - start).set_start(start)
+        # fadein_duration = min(1, (end - start) / 4)
+        # fadeout_duration = min(1, (end - start) / 4)
+        # subtitle_clip = subtitle_clip.fadein(fadein_duration).fadeout(fadeout_duration)
+        subtitle_clip = subtitle_clip.resize(lambda t: resize(t, (end - start) / 2))
+        
+        subtitle_clips.append(subtitle_clip)
+
+    # Overlay the subtitle clips on the video
+    final_clip = CompositeVideoClip([video_clip] + subtitle_clips)
+
+    final_clip.write_videofile(output_path, codec="libx264", audio_codec="aac")
 
     video_clip.close()
     audio_clip.close()
+    final_clip.close()
+
+# def generate_video_with_subtitles(video_path, subtitles):
+#     # Load the video clip
+#     video_clip = VideoFileClip(video_path)
+
+#     # Create a TextClip object for each subtitle and set the duration
+#     subtitle_clips = []
+#     for subtitle in subtitles:
+#         subtitle_clip = TextClip(subtitle, fontsize=24, color='white', bg_color='black')
+#         subtitle_clip = subtitle_clip.set_pos('center')
+#         subtitle_clips.append(subtitle_clip)
+
+#     # Overlay the subtitle clips on the video
+#     final_clip = CompositeVideoClip([video_clip] + subtitle_clips)
+
+#     # Write the result to a file
+#     final_clip.write_videofile("output_with_subtitles.mp4", codec="libx264", audio_codec="aac")
+
+def resize(t, duration):
+    if duration == 0:
+        return 1
+    # Starting scale factor
+    start_scale = 1
+    # End scale factor (the size to which the text should grow)
+    end_scale = 1.1
+    # Calculate the scaling factor based on elapsed time and total duration
+    scale_factor = start_scale + t/duration * (end_scale - start_scale)
+    return scale_factor
