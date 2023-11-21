@@ -13,7 +13,7 @@ def create_audio(title, content):
     try:
         # Request speech synthesis
         content = (f"{title}") + content
-        response = polly.synthesize_speech(Engine="standard", Text=content, OutputFormat="mp3",
+        response = polly.synthesize_speech(Engine="neural", Text=content, OutputFormat="mp3",
                                             VoiceId="Joanna")
     except (BotoCoreError, ClientError) as error:
         # The service returned an error, exit gracefully
@@ -26,7 +26,7 @@ def create_audio(title, content):
         # ensure the close method of the stream object will be called automatically
         # at the end of the with statement's scope.
         with closing(response["AudioStream"]) as stream:
-            path = os.getcwd() + os.getenv("RAW_AUDIOS_DIR")
+            path = os.path.join(os.getcwd(), 'raw_audios')
             audio_title = title.strip()[0:8] + ".mp3"
             output = os.path.join(path, f"{audio_title}")
             try:

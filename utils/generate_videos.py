@@ -12,17 +12,17 @@ urls = hm_videos.values()
 
 start = time.time()
 
+# creates a directory 'raw_videos' at the same level as the proxies folder
+parent_path = os.path.dirname(os.getcwd())
+path = os.path.join(parent_path, "raw_videos")
+
+try:
+    os.mkdir(path)
+except (FileExistsError) as error:
+    print(error)
+    sys.exit(-1)
+
 for title, url in zip(titles, urls):
-    # creates a directory 'raw_videos' at the same level as the proxies folder
-    parent_path = os.path.dirname(os.getcwd())
-    path = os.path.join(parent_path, "raw_videos")
-
-    try:
-        os.mkdir(path)
-    except (FileExistsError) as error:
-        print(error)
-        sys.exit(-1)
-
     yt = pytube.YouTube(url)
     video = yt.streams.get_highest_resolution()
     video.download(output_path = path, filename=f"{title}.mp4")
