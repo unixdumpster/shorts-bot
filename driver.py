@@ -7,11 +7,10 @@ import proofread as pr
 import os
 
 reddit_client = reddit.get_reddit_client(reddit.get_token_parameters())
-
 posts = reddit.get_posts("AmITheAsshole", reddit_client, 10)
 post = list(posts)[0]
+
 pollytts.create_audio(pr.proofread(post.title), pr.proofread(post.selftext))
-# tts.create_audio(pr.proofread(post.title), pr.proofread(post.selftext))
 # yt.download_video("https://www.youtube.com/watch?v=YwILPdVZsIY")
 
 video_path = os.getcwd() + "\\raw_videos\\CSGO.mp4"

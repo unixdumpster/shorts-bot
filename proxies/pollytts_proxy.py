@@ -12,6 +12,7 @@ def create_audio(title, content):
 
     try:
         # Request speech synthesis
+        content = (f"{title}") + content
         response = polly.synthesize_speech(Engine="standard", Text=content, OutputFormat="mp3",
                                             VoiceId="Joanna")
     except (BotoCoreError, ClientError) as error:
