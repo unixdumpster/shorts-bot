@@ -21,9 +21,6 @@ def generate_video(video_path, audio_path, subtitles, output_path):
     for (start, end), text in subtitles:
         subtitle_clip = TextClip(text, fontsize=60, color='white', font='Impact', stroke_color='black',stroke_width=1)
         subtitle_clip = subtitle_clip.set_pos('center').set_duration(end - start).set_start(start)
-        # fadein_duration = min(1, (end - start) / 4)
-        # fadeout_duration = min(1, (end - start) / 4)
-        # subtitle_clip = subtitle_clip.fadein(fadein_duration).fadeout(fadeout_duration)
         subtitle_clip = subtitle_clip.resize(lambda t: resize(t, (end - start) / 2))
         
         subtitle_clips.append(subtitle_clip)
@@ -36,23 +33,6 @@ def generate_video(video_path, audio_path, subtitles, output_path):
     video_clip.close()
     audio_clip.close()
     final_clip.close()
-
-# def generate_video_with_subtitles(video_path, subtitles):
-#     # Load the video clip
-#     video_clip = VideoFileClip(video_path)
-
-#     # Create a TextClip object for each subtitle and set the duration
-#     subtitle_clips = []
-#     for subtitle in subtitles:
-#         subtitle_clip = TextClip(subtitle, fontsize=24, color='white', bg_color='black')
-#         subtitle_clip = subtitle_clip.set_pos('center')
-#         subtitle_clips.append(subtitle_clip)
-
-#     # Overlay the subtitle clips on the video
-#     final_clip = CompositeVideoClip([video_clip] + subtitle_clips)
-
-#     # Write the result to a file
-#     final_clip.write_videofile("output_with_subtitles.mp4", codec="libx264", audio_codec="aac")
 
 def resize(t, duration):
     if duration == 0:

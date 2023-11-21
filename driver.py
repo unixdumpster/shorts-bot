@@ -30,4 +30,3 @@ final_title = video_type.split(".")[0] + "_" + audio_title.split(".")[0].strip("
 print(final_title)
 final_path = os.path.join('final_products', final_title)
 ffmpeg.generate_video(video_path, audio_path, subtitles, os.path.join('final_products', final_title))
-# ffmpeg.generate_video_with_subtitles(final_path, subtitles)
