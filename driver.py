@@ -1,15 +1,15 @@
 import proxies.video_builder as vb
 import proxies.pollytts_proxy as pollytts
-import proxies.reddit_proxy as reddit
+from proxies import RedditClient
 import proofread as pr
 import os
 import random as rand
 import proxies.google_cloud_proxy as gcp
 
 # content
-reddit_client = reddit.get_reddit_client(reddit.get_token_parameters())
-posts = reddit.get_posts("AmITheAsshole", reddit_client, 10)
-post = list(posts)[0]
+reddit_client = RedditClient(os.getenv('REDDIT_CLIENT_ID'), 
+                             os.getenv('REDDIT_CLIENT_SECRET'), 
+                             os.getenv('REDDIT_USERAGENT'))
 
 # audio
 audio_path = os.path.join(os.getcwd(), 'raw_audios')

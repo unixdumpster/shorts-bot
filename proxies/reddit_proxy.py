@@ -1,25 +1,31 @@
 import praw
-import os 
-from dotenv import load_dotenv
+import random as r
+from playwright.sync_api import sync_playwright
 
-def get_token_parameters():
-    load_dotenv()
+class RedditClient:
+    def __init__(self, client_id, client_secret, user_agent):
+        self._backingClient = praw.Reddit(client_id= client_id, 
+                                            client_secret=client_secret, 
+                                            user_agent=user_agent)
+        
+        self._subreddit_names = ['AITAH', 'AmITheAsshole', 'TIFU', 'Confessions']
+        self._subreddit_used = None
 
-    return {
-    'client_id': os.getenv("REDDIT_CLIENT_ID"),
-    'client_secret': os.getenv("REDDIT_CLIENT_SECRET"),
-    'user_agent': os.getenv("REDDIT_USERAGENT")
-    }
+    def get_posts_and_screenshots(self, num_posts):
+        self._subreddit_used = self._subreddit_names[r.randint(0, 3)]
+        sub = self._backingClient.subreddit(self._subreddit_used)
 
-def get_reddit_client(token_params):
-    return praw.Reddit(
-        client_id=token_params["client_id"],
-        client_secret=token_params["client_secret"],
-        user_agent=token_params["user_agent"]
-    )
+        ps_map = {}
+        posts = list(sub.top(time_filter='day', limit=num_posts))
+        for post in posts:
+            with sync_playwright() as p:
+                browser = p.chromium.launch()
+                page = browser.new_page()
+                page.goto(post.url)
+                page.wait_for_load_state()
+                ps_map[post.url] = page.screenshot()
 
-def get_posts(subreddit_name, client, num_posts):
-    subreddit = client.subreddit(subreddit_name)
-    hottest_posts = subreddit.top(time_filter='week', limit=num_posts)
-    return hottest_posts
+        return ps_map
 
+    def get_subreddit(self):
+        return self._subreddit_used
