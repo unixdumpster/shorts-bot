@@ -4,7 +4,7 @@ import proxies.reddit_proxy as reddit
 import proofread as pr
 import os
 import random as rand
-import proxies.google_cloud_proxy as transcribe
+import proxies.google_cloud_proxy as gcp
 
 # content
 reddit_client = reddit.get_reddit_client(reddit.get_token_parameters())
@@ -17,9 +17,9 @@ audio_title = pollytts.create_audio(pr.proofread(post.title), pr.proofread(post.
 audio_path = os.path.join(audio_path, audio_title)
 
 #subtitles
-upload_audio_and_get_uri = transcribe.upload_blob("shorts-bot-audio-bucket", audio_path, "audios/temp")
-gcs_response = transcribe.long_running_recognize(upload_audio_and_get_uri)
-subtitles = transcribe.get_transcript(gcs_response, 0.3)
+upload_audio_and_get_uri = gcp.upload_blob("shorts-bot-audio-bucket", audio_path, "audios/temp")
+gcs_response = gcp.long_running_recognize(upload_audio_and_get_uri)
+subtitles = gcp.get_transcript(gcs_response, 0.3)
 
 # video
 video_path = os.path.join(os.getcwd(), 'raw_videos')
