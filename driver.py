@@ -4,12 +4,12 @@ import proxies.reddit_proxy as reddit
 import proofread as pr
 import os
 import random as rand
-import proxies.google_speech_to_text as transcribe
+import proxies.google_cloud_proxy as transcribe
 
 # content
 reddit_client = reddit.get_reddit_client(reddit.get_token_parameters())
 posts = reddit.get_posts("AmITheAsshole", reddit_client, 10)
-post = list(posts)[0]
+post = list(posts)[2]
 
 # audio
 audio_path = os.path.join(os.getcwd(), 'raw_audios')

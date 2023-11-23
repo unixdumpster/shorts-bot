@@ -5,13 +5,9 @@ from google.cloud import storage
 def get_credentials(credentials):
     return service_account.Credentials.from_service_account_file(credentials)
 
+# upload audio file to provided bucket and destination path
 def upload_blob(bucket_name, audio_path, destination_path):
-    """Uploads a file to the bucket."""
-    # bucket_name = "your-bucket-name"
-    # source_file_name = "local/path/to/file"
-    # destination_blob_name = "storage-object-name"
-
-    client_file = 'shorts-bot-405804-476067795df1.json'
+    client_file = "GOOGLE_SERVICE_ACCOUNT_CREDS"
     storage_client = storage.Client(credentials=get_credentials(client_file))
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(destination_path)
@@ -27,7 +23,7 @@ def upload_blob(bucket_name, audio_path, destination_path):
     
 
 def long_running_recognize(storage_uri):
-    client_file = 'shorts-bot-405804-476067795df1.json'
+    client_file = "GOOGLE_SERVICE_ACCOUNT_CREDS"
     client = speech.SpeechClient(credentials=get_credentials(client_file))
 
     # load the audio file
@@ -65,10 +61,7 @@ def get_transcript(gcs_response, bin_size=0.5):
                 current_sentence_start = start_time
                 current_sentence_end = start_time
 
-            # print(f"start_time - end_time: {current_sentence_end.total_seconds() - current_sentence_start.total_seconds()}")
             if current_sentence_end.total_seconds() - current_sentence_start.total_seconds() > bin_size:
-                # If the current word starts a new sentence
-                # print(f"current sentence: {current_sentence} start time: {start_time} end time: {end_time}")
                 transcript.append(((current_sentence_start.total_seconds(), current_sentence_end.total_seconds()), " ".join(current_sentence)))
                 current_sentence = []
                 current_sentence_start = start_time

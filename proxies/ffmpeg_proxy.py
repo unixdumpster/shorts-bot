@@ -19,7 +19,7 @@ def generate_video(video_path, audio_path, subtitles, output_path):
     # Create a TextClip object for each subtitle and set the duration
     subtitle_clips = []
     for (start, end), text in subtitles:
-        subtitle_clip = TextClip(text, fontsize=60, color='white', font='Impact')
+        subtitle_clip = TextClip(text, fontsize=60, color='white', font='Impact', stroke_color='purple',stroke_width=2)
         subtitle_clip = subtitle_clip.set_pos('center').set_duration(end - start).set_start(start)
         # subtitle_clip = subtitle_clip.resize(lambda t: resize(t, (end - start) / 2))
         
