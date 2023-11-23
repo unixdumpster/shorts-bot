@@ -1,4 +1,4 @@
-import proxies.video_generator as vg
+import proxies.video_builder as vb
 import proxies.pollytts_proxy as pollytts
 import proxies.reddit_proxy as reddit
 import proofread as pr
@@ -31,4 +31,4 @@ video_path = os.path.join(video_path, video_type)
 final_title = video_type.split(".")[0] + "_" + audio_title.split(".")[0].strip(" ") + "_FINAL.mp4"
 print(final_title)
 final_path = os.path.join('final_products', final_title)
-vg.generate_video(video_path, audio_path, subtitles, os.path.join('final_products', final_title))
+vb.generate_video(video_path, audio_path, subtitles, os.path.join('final_products', final_title))
