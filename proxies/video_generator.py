@@ -34,13 +34,13 @@ def generate_video(video_path, audio_path, subtitles, output_path):
     audio_clip.close()
     final_clip.close()
 
-def resize(t, duration):
-    if duration == 0:
-        return 1
-    # Starting scale factor
-    start_scale = 1
-    # End scale factor (the size to which the text should grow)
-    end_scale = 1.1
-    # Calculate the scaling factor based on elapsed time and total duration
-    scale_factor = start_scale + t/duration * (end_scale - start_scale)
-    return scale_factor
+# def resize(t, duration):
+#     if duration == 0:
+#         return 1
+#     # Starting scale factor
+#     start_scale = 1
+#     # End scale factor (the size to which the text should grow)
+#     end_scale = 1.1
+#     # Calculate the scaling factor based on elapsed time and total duration
+#     scale_factor = start_scale + t/duration * (end_scale - start_scale)
+#     return scale_factor
