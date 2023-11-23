@@ -7,7 +7,7 @@ def get_credentials(credentials):
 
 # upload audio file to provided bucket and destination path
 def upload_blob(bucket_name, audio_path, destination_path):
-    client_file = "GOOGLE_SERVICE_ACCOUNT_CREDS"
+    client_file = 'gcs_creds.json'
     storage_client = storage.Client(credentials=get_credentials(client_file))
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(destination_path)
@@ -23,7 +23,7 @@ def upload_blob(bucket_name, audio_path, destination_path):
     
 
 def long_running_recognize(storage_uri):
-    client_file = "GOOGLE_SERVICE_ACCOUNT_CREDS"
+    client_file = 'gcs_creds.json'
     client = speech.SpeechClient(credentials=get_credentials(client_file))
 
     # load the audio file
@@ -73,5 +73,5 @@ def get_transcript(gcs_response, bin_size=0.5):
     if current_sentence:
         transcript.append(((current_sentence_start.total_seconds(), current_sentence_end.total_seconds()), " ".join(current_sentence)))
 
-    print(transcript)
+    # print(transcript)
     return transcript
