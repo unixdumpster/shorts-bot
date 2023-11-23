@@ -17,7 +17,9 @@ audio_title = pollytts.create_audio(pr.proofread(post.title), pr.proofread(post.
 audio_path = os.path.join(audio_path, audio_title)
 
 #subtitles
-subtitles = transcribe.get_transcript(audio_path)
+upload_audio_and_get_uri = transcribe.upload_blob("shorts-bot-audio-bucket", audio_path, "audios/temp.wav")
+gcs_response = transcribe.long_running_recognize(upload_audio_and_get_uri)
+subtitles = transcribe.get_transcript(gcs_response, 0.3)
 
 # video
 video_path = os.path.join(os.getcwd(), 'raw_videos')

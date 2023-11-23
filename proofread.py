@@ -2,7 +2,7 @@
 import re
 
 def proofread(text):
-    result = text.replace("AITA", "Am I the asshole?")
+    result = text.replace("AITA", "Am I the asshole")
     # english_dict = enchant.Dict("en_US")
 
     # # Split the text into words
