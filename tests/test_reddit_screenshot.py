@@ -10,9 +10,8 @@ class TestScreenshot(unittest.TestCase):
             browser = p.chromium.launch()
             page = browser.new_page()
             page.goto('https://www.reddit.com/r/confessions/comments/181gg06/my_mom_unknowingly_destroyed_my_porn_stash/')
-            page.wait_for_load_state()
             page.wait_for_selector('shreddit-post')
-            page.locator('shreddit-post').screenshot(path="scr3eenshot.png")
+            page.locator('shreddit-post').screenshot(path="screenshot.png")
 
 if __name__ == '__main__':
     unittest.main()
