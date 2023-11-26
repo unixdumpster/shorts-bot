@@ -5,3 +5,4 @@ raw_audios/
 *.mp4
 .env
 gcs_creds.json
+.idea/
