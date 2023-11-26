@@ -1,22 +1,25 @@
 import proxies.video_builder as vb
 import proxies.pollytts_proxy as pollytts
 from proxies import RedditClient
-import proofread as pr
 import os
 import random as rand
 import proxies.google_cloud_proxy as gcp
+from dotenv import load_dotenv
 
+load_dotenv()
 # content
-reddit_client = RedditClient(os.getenv('REDDIT_CLIENT_ID'), 
-                             os.getenv('REDDIT_CLIENT_SECRET'), 
+reddit_client = RedditClient(os.getenv('REDDIT_CLIENT_ID'),
+                             os.getenv('REDDIT_CLIENT_SECRET'),
                              os.getenv('REDDIT_USERAGENT'))
+
+post = list(reddit_client.get_posts_and_screenshots(1).keys())[0]
 
 # audio
 audio_path = os.path.join(os.getcwd(), 'raw_audios')
-audio_title = pollytts.create_audio(pr.proofread(post.title), pr.proofread(post.selftext))
+audio_title = pollytts.create_audio(post.title, post.selftext)
 audio_path = os.path.join(audio_path, audio_title)
 
-#subtitles
+# subtitles
 upload_audio_and_get_uri = gcp.upload_blob("shorts-bot-audio-bucket", audio_path, "audios/temp")
 gcs_response = gcp.long_running_recognize(upload_audio_and_get_uri)
 subtitles = gcp.get_transcript(gcs_response, 0.3)

@@ -1,9 +1,11 @@
 from google.oauth2 import service_account
 from google.cloud import speech
 from google.cloud import storage
+from moviepy.config import change_settings
 
 def get_credentials(credentials):
     return service_account.Credentials.from_service_account_file(credentials)
+
 
 # upload audio file to provided bucket and destination path
 def upload_blob(bucket_name, audio_path, destination_path):
@@ -20,14 +22,16 @@ def upload_blob(bucket_name, audio_path, destination_path):
         )
     )
     return f"gs://{bucket_name}/{destination_path}"
-    
+
+
 # get the google cloud speech to text response object
 def long_running_recognize(storage_uri):
+    change_settings({"IMAGEMAGICK_BINARY": r"C:\\Program Files\\ImageMagick-7.1.1-Q16-HDRI\\magick.exe"})
     client_file = 'gcs_creds.json'
+    # load the audio file
     client = speech.SpeechClient(credentials=get_credentials(client_file))
 
-    # load the audio file
-    client = speech.SpeechClient()
+    # client = speech.SpeechClient()
 
     config = speech.RecognitionConfig(
         sample_rate_hertz=16000,
@@ -43,6 +47,7 @@ def long_running_recognize(storage_uri):
     result = operation.result(timeout=90)
 
     return result
+
 
 # get the transcript that will be processed in our video creation
 def get_transcript(gcs_response, bin_size=0.5):
@@ -69,7 +74,8 @@ def get_transcript(gcs_response, bin_size=0.5):
 
             # does current word belong in this bin or next one?
             if current_sentence_end.total_seconds() - current_sentence_start.total_seconds() > bin_size:
-                transcript.append(((current_sentence_start.total_seconds(), current_sentence_end.total_seconds()), " ".join(current_sentence)))
+                transcript.append(((current_sentence_start.total_seconds(), current_sentence_end.total_seconds()),
+                                   " ".join(current_sentence)))
                 current_sentence = []
                 current_sentence_start = start_time
 
@@ -78,7 +84,8 @@ def get_transcript(gcs_response, bin_size=0.5):
 
     # Add the last sentence
     if current_sentence:
-        transcript.append(((current_sentence_start.total_seconds(), current_sentence_end.total_seconds()), " ".join(current_sentence)))
+        transcript.append(((current_sentence_start.total_seconds(), current_sentence_end.total_seconds()),
+                           " ".join(current_sentence)))
 
     # print(transcript)
     return transcript
