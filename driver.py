@@ -5,6 +5,7 @@ import os
 import random as rand
 import proxies.google_cloud_proxy as gcp
 from dotenv import load_dotenv
+import utils.proofread as pr 
 
 load_dotenv()
 # content
@@ -13,10 +14,10 @@ reddit_client = RedditClient(os.getenv('REDDIT_CLIENT_ID'),
                              os.getenv('REDDIT_USERAGENT'))
 
 post = list(reddit_client.get_posts_and_screenshots(1).keys())[0]
-
+    
 # audio
 audio_path = os.path.join(os.getcwd(), 'raw_audios')
-audio_title = pollytts.create_audio(post.title, post.selftext)
+audio_title = pollytts.create_audio(pr.proofread(post.title), pr.proofread(post.selftext))
 audio_path = os.path.join(audio_path, audio_title)
 
 # subtitles
