@@ -1,5 +1,6 @@
 __pycache__/
 proxies/__pycache__/
+uploaders/__pycache__/
 raw_audios/
 *.wav
 *.mp4
