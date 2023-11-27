@@ -2,7 +2,7 @@ import random
 from moviepy.editor import *
 
 def generate_video(video_path, audio_path, subtitles, screenshot_clips, output_path):
-    video_clip = VideoFileClip(video_path)
+    video_clip = VideoFileClip(video_path).resize(width=700, height=1250)
     audio_clip = AudioFileClip(audio_path)
 
     # Calculate the valid range for the start point of the video
@@ -19,14 +19,14 @@ def generate_video(video_path, audio_path, subtitles, screenshot_clips, output_p
     # Create a TextClip object for each subtitle and set the duration
     subtitle_clips = []
     for (start, end), text in subtitles:
-        subtitle_clip = TextClip(text, fontsize=60, color='white', font='Impact', stroke_color='purple',stroke_width=2)
+        subtitle_clip = TextClip(text, fontsize=50, color='white', font='Impact', stroke_color='purple',stroke_width=2)
         subtitle_clip = subtitle_clip.set_pos('center').set_duration(end - start).set_start(start)
         # subtitle_clip = subtitle_clip.resize(lambda t: resize(t, (end - start) / 2))
         
         subtitle_clips.append(subtitle_clip)
-        
+
     # Overlay the clips together
-    final_clip = CompositeVideoClip([video_clip] + subtitle_clips + screenshot_clips)
+    final_clip = CompositeVideoClip([video_clip] + subtitle_clips + screenshot_clips, size=(700, 1250))
 
     # final_clip = CompositeVideoClip([final_clip, overlay_image])
 
@@ -38,6 +38,7 @@ def generate_video(video_path, audio_path, subtitles, screenshot_clips, output_p
 
 def generate_screenshot_overlay(image_path, end_time, video_path):
     overlay_image = ImageClip(image_path).set_pos('center')
+    overlay_image = overlay_image.resize(width=overlay_image.size[0] / 1.15, height=overlay_image.size[1] / 1.15)
     fps = VideoFileClip(video_path).fps
 
     # Calculate the total number of frames
