@@ -1,7 +1,7 @@
 import random
 from moviepy.editor import *
 
-def generate_video(video_path, audio_path, subtitles, output_path):
+def generate_video(video_path, audio_path, subtitles, screenshot_clips, output_path):
     video_clip = VideoFileClip(video_path)
     audio_clip = AudioFileClip(audio_path)
 
@@ -24,15 +24,42 @@ def generate_video(video_path, audio_path, subtitles, output_path):
         # subtitle_clip = subtitle_clip.resize(lambda t: resize(t, (end - start) / 2))
         
         subtitle_clips.append(subtitle_clip)
+        
+    # Overlay the clips together
+    final_clip = CompositeVideoClip([video_clip] + subtitle_clips + screenshot_clips)
 
-    # Overlay the subtitle clips on the video
-    final_clip = CompositeVideoClip([video_clip] + subtitle_clips)
+    # final_clip = CompositeVideoClip([final_clip, overlay_image])
 
     final_clip.write_videofile(output_path, codec="libx264", audio_codec="aac")
 
     video_clip.close()
     audio_clip.close()
     final_clip.close()
+
+def generate_screenshot_overlay(image_path, end_time, video_path):
+    overlay_image = ImageClip(image_path).set_pos('center')
+    fps = VideoFileClip(video_path).fps
+
+    # Calculate the total number of frames
+    total_frames = int(end_time * fps)
+
+    # Calculate the duration for which the transparency will change
+    fade_duration = end_time / 5
+
+    # Create ImageClips for each frame with gradually changing transparency
+    overlay_clips = []
+    fade_point = int(total_frames / 5 * 4)
+    for frame_num in range(fade_point):
+        frame_clip = overlay_image.set_duration(1 / fps).set_start(frame_num / fps).set_end((frame_num + 1) / fps)
+        overlay_clips.append(frame_clip)
+
+    for frame_num in range(fade_point, total_frames):
+        transparency = 1.0 - min(1.0, (frame_num - fade_point) * (1.0 / (fade_duration * fps)))
+        frame_clip = overlay_image.set_duration(1 / fps).set_start(frame_num / fps).set_end((frame_num + 1) / fps)
+        frame_clip = frame_clip.set_opacity(transparency)
+        overlay_clips.append(frame_clip)
+
+    return overlay_clips
 
 # def resize(t, duration):
 #     if duration == 0:

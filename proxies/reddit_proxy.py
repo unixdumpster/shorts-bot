@@ -21,7 +21,7 @@ class RedditClient:
                 page = browser.new_page()
                 page.goto(post.url)
                 page.wait_for_selector('shreddit-post')
-                ps_map[post] = page.locator('shreddit-post').screenshot()
+                ps_map[post] = page.locator('shreddit-post').screenshot(path="screenshot.png")
         return ps_map
 
     def get_subreddit(self):

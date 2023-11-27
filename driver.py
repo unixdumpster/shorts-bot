@@ -14,10 +14,10 @@ reddit_client = RedditClient(os.getenv('REDDIT_CLIENT_ID'),
                              os.getenv('REDDIT_USERAGENT'))
 
 post = list(reddit_client.get_posts_and_screenshots(1).keys())[0]
-    
+
 # audio
 audio_path = os.path.join(os.getcwd(), 'raw_audios')
-audio_title = pollytts.create_audio(pr.proofread(post.title), pr.proofread(post.selftext))
+audio_title = pollytts.create_audio(pr.proofread(post.title), pr.proofread(post.selftext)[:1000])
 audio_path = os.path.join(audio_path, audio_title)
 
 # subtitles
@@ -35,4 +35,4 @@ video_path = os.path.join(video_path, video_type)
 final_title = video_type.split(".")[0] + "_" + audio_title.split(".")[0].strip(" ") + "_FINAL.mp4"
 print(final_title)
 final_path = os.path.join('final_products', final_title)
-vb.generate_video(video_path, audio_path, subtitles, os.path.join('final_products', final_title))
+vb.generate_video(video_path, audio_path, subtitles, vb.generate_screenshot_overlay("screenshot.png", 3.5, video_path), os.path.join('final_products', final_title))
