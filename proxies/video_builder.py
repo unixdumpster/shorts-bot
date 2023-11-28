@@ -2,7 +2,7 @@ import random
 from moviepy.editor import *
 
 def generate_video(video_path, audio_path, subtitles, screenshot_clips, output_path):
-    video_clip = VideoFileClip(video_path).resize(width=700, height=1250)
+    video_clip = VideoFileClip(video_path)
     audio_clip = AudioFileClip(audio_path)
 
     # Calculate the valid range for the start point of the video
@@ -26,9 +26,7 @@ def generate_video(video_path, audio_path, subtitles, screenshot_clips, output_p
         subtitle_clips.append(subtitle_clip)
 
     # Overlay the clips together
-    final_clip = CompositeVideoClip([video_clip] + subtitle_clips + screenshot_clips, size=(700, 1250))
-
-    # final_clip = CompositeVideoClip([final_clip, overlay_image])
+    final_clip = CompositeVideoClip([video_clip] + subtitle_clips + screenshot_clips).crop(x_center=video_clip.w / 2, width=550)
 
     final_clip.write_videofile(output_path, codec="libx264", audio_codec="aac")
 
