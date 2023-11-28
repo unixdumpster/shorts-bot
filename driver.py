@@ -17,7 +17,7 @@ post = list(reddit_client.get_posts_and_screenshots(1).keys())[0]
 
 # audio
 audio_path = os.path.join(os.getcwd(), 'raw_audios')
-audio_title = pollytts.create_audio(pr.proofread(post.title), pr.proofread(post.selftext)[:1000])
+audio_title = pollytts.create_audio(pr.proofread(post.title), pr.proofread(post.selftext)[:950])
 audio_path = os.path.join(audio_path, audio_title)
 
 # subtitles
