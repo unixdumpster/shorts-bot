@@ -27,7 +27,7 @@ def create_audio(title, content):
         # at the end of the with statement's scope.
         with closing(response["AudioStream"]) as stream:
             path = os.path.join(os.getcwd(), 'raw_audios')
-            audio_title = title.strip()[0:8] + ".mp3"
+            audio_title = title.strip()[0:16] + ".mp3"
             output = os.path.join(path, f"{audio_title}")
             try:
                 # Open a file for writing the output as a binary stream
