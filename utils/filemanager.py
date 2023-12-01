@@ -12,11 +12,13 @@ def setup():
     if os.path.exists("screenshot.png"):
         os.remove("screenshot.png")
 
-    raw_video_dir = create_directory('raw_videos')
+    raw_video_dir = os.path.join(os.getcwd(), 'raw_videos')
     raw_audio_dir = create_directory('raw_audios')
     final_product_dir = create_directory('final_products')
 
-    if len(os.listdir(str(raw_video_dir))) == 0:
+    if len(os.listdir(str(raw_video_dir))) < 3:
+        cleanup_directory(raw_video_dir)
+        create_directory('raw_videos')
         gv.generate_videos(raw_video_dir)
 
     return raw_video_dir, raw_audio_dir, final_product_dir
@@ -29,14 +31,14 @@ def teardown(raw_audio_dir, final_product_dir):
 
 
 def create_directory(directory):
-    dir_name = os.path.join(os.getcwd(), directory)
+    dir_path = os.path.join(os.getcwd(), directory)
 
     # teardown failed in a previous run
-    if os.path.exists(dir_name):
-        cleanup_directory(dir_name)
+    if os.path.exists(dir_path):
+        cleanup_directory(dir_path)
 
-    os.mkdir(dir_name)
-    return dir_name
+    os.mkdir(dir_path)
+    return dir_path
 
 
 def cleanup_directory(directory):

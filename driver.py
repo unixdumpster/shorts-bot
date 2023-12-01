@@ -7,6 +7,8 @@ import proxies.google_cloud_proxy as gcp
 from dotenv import load_dotenv
 import utils.parse_content as pc
 import utils.filemanager as fm
+import utils.generate_videos as gv
+import time
 
 # setup
 load_dotenv()
@@ -43,5 +45,6 @@ for part in story_parts:
                       vb.generate_screenshot_overlay("screenshot.png", 3.5, video_path),
                       os.path.join(final_product_dir, final_title))
 
+time.sleep(100)
 # cleanup
 fm.teardown(raw_audio_dir, final_product_dir)
