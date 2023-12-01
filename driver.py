@@ -10,7 +10,7 @@ import utils.filemanager as fm
 
 # setup
 load_dotenv()
-raw_video_dir, raw_audio_dir, final_products_dir = fm.initialize_directories()
+raw_video_dir, raw_audio_dir, final_product_dir = fm.setup()
 
 # content
 reddit_client = RedditClient(os.getenv('REDDIT_CLIENT_ID'),
@@ -38,11 +38,10 @@ for part in story_parts:
 
     # product
     final_title = video_type.split(".")[0] + "_" + audio_title.split(".")[0].strip(" ") + "_FINAL.mp4"
-    final_path = os.path.join(final_products_dir, final_title)
+    final_path = os.path.join(final_product_dir, final_title)
     vb.generate_video(video_path, audio_path, subtitles,
                       vb.generate_screenshot_overlay("screenshot.png", 3.5, video_path),
-                      os.path.join('final_products', final_title))
+                      os.path.join(final_product_dir, final_title))
 
 # cleanup
-fm.cleanup_directory(raw_audio_dir)
-fm.cleanup_directory(final_products_dir)
+fm.teardown(raw_audio_dir, final_product_dir)
