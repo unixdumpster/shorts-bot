@@ -17,10 +17,8 @@ if not os.path.exists(raw_video_path):
     gv.generate_videos(raw_video_path)
 
 raw_audio_path = os.path.join(os.getcwd(), 'raw_audios')
-try:
+if not os.path.exists(raw_audio_path):
     os.mkdir(raw_audio_path)
-except OSError as error:
-    print(error)
 
 # content
 reddit_client = RedditClient(os.getenv('REDDIT_CLIENT_ID'),
@@ -53,3 +51,13 @@ for part in story_parts:
     vb.generate_video(video_path, audio_path, subtitles, vb.generate_screenshot_overlay("screenshot.png", 3.5, video_path), os.path.join('final_products', final_title))
 
 # cleanup
+audio_files = os.listdir(raw_audio_path)
+for audio_file in audio_files:
+    audio_file_path = os.path.join(raw_audio_path, audio_file)
+    if os.path.isfile(audio_file_path):
+        os.remove(audio_file_path)
+
+try:
+    os.rmdir(raw_audio_path)
+except OSError as error:
+    print(error)
