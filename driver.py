@@ -16,8 +16,7 @@ raw_video_dir, raw_audio_dir, final_product_dir = fm.setup()
 reddit_client = RedditClient(os.getenv('REDDIT_CLIENT_ID'),
                              os.getenv('REDDIT_CLIENT_SECRET'),
                              os.getenv('REDDIT_USERAGENT'))
-
-post = list(reddit_client.get_posts_and_screenshots(1).keys())[0]
+post = reddit_client.get_post_and_screenshot()
 
 # split post into multiple tuples of titles and texts
 story_parts = pc.split_content(post, 180)
