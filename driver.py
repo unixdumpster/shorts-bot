@@ -1,15 +1,13 @@
-import proxies.video_builder as vb
-import proxies.pollytts_proxy as pollytts
-from proxies import RedditClient
 import os
 import random as rand
 import proxies.google_cloud_proxy as gcp
-from dotenv import load_dotenv
+import proxies.video_builder as vb
+import proxies.pollytts_proxy as pollytts
 import utils.parse_content as pc
 import utils.filemanager as fm
-import utils.generate_videos as gv
-import time
 
+from dotenv import load_dotenv
+from proxies import RedditClient
 # setup
 load_dotenv()
 raw_video_dir, raw_audio_dir, final_product_dir = fm.setup()
@@ -45,6 +43,5 @@ for part in story_parts:
                       vb.generate_screenshot_overlay("screenshot.png", 3.5, video_path),
                       os.path.join(final_product_dir, final_title))
 
-time.sleep(100)
 # cleanup
 fm.teardown(raw_audio_dir, final_product_dir)
