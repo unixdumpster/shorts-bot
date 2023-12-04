@@ -28,6 +28,11 @@ def generate_video(video_path, audio_path, subtitles, screenshot_clips, output_p
     # Overlay the clips together
     final_clip = CompositeVideoClip([video_clip] + subtitle_clips + screenshot_clips).crop(x_center=video_clip.w / 2, width=550)
 
+    # Make sure clip is under 60 seconds for youtube shorts
+    if final_clip.duration >= 60:
+        speed_factor = final_clip.duration / 59
+        final_clip = final_clip.speedx(factor=speed_factor)
+
     final_clip.write_videofile(output_path, codec="libx264", audio_codec="aac")
 
     video_clip.close()
