@@ -15,5 +15,5 @@ def split_content(reddit_post, words_per_subtext):
     return result
 
 def proofread(text):
-    result = text.replace("AITAH", "Am I the ayy whole").replace("AITA", "Am I the ayy whole").replace("TIFU", "Today I fudged up").replace("Aita", "Am I the ayy whole")
+    result = text.replace("AITAH", "Am I the ayy whole").replace("AITA", "Am I the ayy whole").replace("TIFU", "Today I fudged up").replace("Aita", "Am I the ayy whole").replace("fuck", "fudge").replace("Fuck", "fudge")
     return result
