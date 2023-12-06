@@ -5,6 +5,7 @@ import proxies.video_builder as vb
 import proxies.pollytts_proxy as pollytts
 import utils.parse_content as pc
 import utils.filemanager as fm
+import time
 
 from dotenv import load_dotenv
 from proxies import RedditClient
@@ -43,4 +44,5 @@ for part in story_parts:
                       os.path.join(final_product_dir, final_title))
 
 # cleanup
-fm.teardown(raw_audio_dir, final_product_dir)
+# time.sleep(100)
+# fm.teardown(raw_audio_dir, final_product_dir)
